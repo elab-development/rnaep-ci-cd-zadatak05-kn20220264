@@ -107,6 +107,15 @@ def test_create_order_success(mock_database):
         mock_order.total = 240.0
         mock_order.quantity = 2
         mock_order.status = 'pending'
+        # Kljucno: model_dump() mora da vrati pravi dict
+        mock_order.model_dump.return_value = {
+            'product_id': 'prod-1',
+            'price': 100.0,
+            'fee': 20.0,
+            'total': 240.0,
+            'quantity': 2,
+            'status': 'pending'
+        }
 
         with patch.object(main, 'Order') as MockOrder:
             MockOrder.return_value = mock_order
